@@ -23,6 +23,7 @@ import org.slf4j.MarkerFactory;
 import org.slf4j.spi.LocationAwareLogger;
 
 import java.util.Enumeration;
+import java.util.ResourceBundle;
 
 /**
  * <p>
@@ -49,6 +50,8 @@ public class Category {
 
     protected org.slf4j.Logger slf4jLogger;
     private org.slf4j.spi.LocationAwareLogger locationAwareLogger;
+
+    protected ResourceBundle resourceBundle;
 
     private static Marker FATAL_MARKER = MarkerFactory.getMarker("FATAL");
 
@@ -354,6 +357,10 @@ public class Category {
     public void assertLog(boolean assertion, String msg) {
         if (!assertion)
             error(msg);
+    }
+
+    public void setResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
     }
 
 }

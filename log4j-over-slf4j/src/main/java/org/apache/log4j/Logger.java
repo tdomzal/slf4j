@@ -16,6 +16,9 @@
 
 package org.apache.log4j;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.apache.log4j.spi.LoggerFactory;
 import org.slf4j.spi.LocationAwareLogger;
 
@@ -79,6 +82,58 @@ public class Logger extends Category {
      */
     public void trace(Object message, Throwable t) {
         differentiatedLog(null, LOGGER_FQCN, LocationAwareLogger.TRACE_INT, message, null);
+    }
+
+    /**
+     * (Imported from log4j source code and adapted)
+     */
+    public ResourceBundle getResourceBundle() {
+        for (Category c = this; c != null; c = c.getParent()) {
+            if (c.resourceBundle != null) {
+                return c.resourceBundle;
+            }
+        }
+        // It might be the case that there is no resource bundle
+        return null;
+    }
+
+    /**
+     * (Imported from log4j source code and adapted)
+     */
+    protected String getResourceBundleString(String key) {
+        ResourceBundle rb = getResourceBundle();
+        // This is one of the rare cases where we can use logging in order
+        // to report errors from within log4j.
+        if (rb == null) {
+            //if(!hierarchy.emittedNoResourceBundleWarning) {
+            //error("No resource bundle has been set for category "+name);
+            //hierarchy.emittedNoResourceBundleWarning = true;
+            //}
+            return null;
+        } else {
+            try {
+                return rb.getString(key);
+            } catch (MissingResourceException mre) {
+                error("No resource is associated with key \"" + key + "\".");
+                return null;
+            }
+        }
+    }
+
+    /**
+     * (Imported from log4j source code and adapted)
+     */
+    public void l7dlog(Priority priority, String key, Object[] params, Throwable t) {
+        if (isEnabledFor(priority)) {
+            String pattern = getResourceBundleString(key);
+            String msg;
+            if (pattern == null) {
+                msg = key;
+            } else {
+                msg = java.text.MessageFormat.format(pattern, params);
+            }
+            forcedLog(LOGGER_FQCN, priority, msg, t);
+        }
     }
 
 }
