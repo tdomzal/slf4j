@@ -13,8 +13,8 @@
   <groupId>com.github.tdomzal</groupId>
   <artifactId>log4j-over-slf4j-dfc</artifactId>
   <packaging>jar</packaging>
-  <name>Log4j Implemented Over SLF4J</name>
-  <description>Log4j implemented over SLF4J</description>
+  <name>DFC friendly Log4j Implemented Over SLF4J</name>
+  <description>DFC friendly Log4j implemented over SLF4J</description>
 
   <url>http://www.slf4j.org</url>
 
